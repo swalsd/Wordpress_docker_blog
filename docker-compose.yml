@@ -1,44 +1,73 @@
+## version of the docker-compose file
 version: '3.3'
+## Creation of the containers
 services:
+## Container of the database
     db:
+        ## Name of the container
         container_name: contain_mysql
+        ## Image used to create the container
         image: mysql:5.7
+        ## Environment of the database
         environment:
+        ## Name of the database
           MYSQL_DATABASE: db
+        ## Root password for the service
           MYSQL_ROOT_PASSWORD : password
+        ## Networks of the project
         networks:
             - my-network
+        ## Linking a folder of the local computer to a folder in the container
         volumes:
             - ./db/:/var/lib/mysql/
+        ## Linking the port 8082 of the local computer to the port 3306 of the container
         ports:
           - 8082:3306
+## Container of Wordpress and Apache
     wordpress:
+        ## Name of the container
         container_name: contain_wordpress
+        ## Image used to create the container
         image: 'wordpress:5.8.1-apache'
+        ## Linking the port 8080 of the local computer to the port 80 of the container
         ports:
             - 8080:80
+        ## Environment of the service
         environment:
+          ## Host of the website
           WORDPRESS_DB_HOST: db
+          ## User of the database
           WORDPRESS_DB_USER: root
+          ## Password of the database
           WORDPRESS_DB_PASSWORD: password
+          ## Name of the database used for the website
           WORDPRESS_DB_NAME: db
+        ## Linking a folder of the local computer to a port of the container
         volumes:
           - ./wordpress/:/var/www/html/
+        ## Linking the container of the website to the container of the database
         links:
           - db
+        ## Adding the container to the network previously created
         networks:
           - my-network
+    ## Container of phpmyadmin
     phpmyadmin:
+        ## Image used to create the container
         image: phpmyadmin
         restart: always
+        ## Linking the port 8081 of the local computer to the port 80 of the container
         ports:
           - 8081:80
         environment:
           - PMA_ARBITRARY=1
+        ## Linking the container to the container of the database
         links:
           - db
+        ## Adding the container to the network previously created
         networks:
           - my-network
+## Adding a driver to the networks
 networks:
   my-network:
     driver: bridge
