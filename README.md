@@ -8,6 +8,7 @@ Using Docker to setup a Wordpress website environment.
 
 ## How to install and run the project
 - ➡️ Git clone https://github.com/swalsd/Wordpress_docker_blog.git
+- ➡️ Cd Wordpress_docker_blog.git
 - ➡️ Git checkout master
 - ➡️ Docker-compose up
 ### To access the website
